@@ -1,32 +1,31 @@
-// App.js
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import BubbleView from 'components/BubbleView/BubbleView'
-import { companiesList } from 'utils/constants'
+import { fetchAllCompanies } from 'api/company'
+import { createLinks } from 'utils/helpers'
+import { UPDATE_COMPANIES } from 'store/companies'
 
-function App() {
-  const [companies, setCompanies] = useState([])
+const App = () => {
+  const dispatch = useDispatch()
+
+  const getAllCompanies = async () => {
+    const responce = await fetchAllCompanies()
+    console.log(responce)
+    const updatedData = createLinks(responce)
+    dispatch(UPDATE_COMPANIES(updatedData))
+  }
 
   useEffect(() => {
-    // Fetch companies data from API or other data source
-    // Example API call:
-    // fetch('https://api.example.com/companies')
-    //   .then(response => response.json())
-    //   .then(data => setCompanies(data.result.data))
-    //   .catch(error => console.error('Error fetching companies:', error));
-    // Dummy data for demonstration
-
-    setCompanies(companiesList.result.data)
+    getAllCompanies()
   }, [])
 
   return (
     <Router>
-      <div className='App'>
-        <Routes>
-          <Route exact path='/' element={<BubbleView companies={companies} />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route exact path='/' element={<BubbleView />} />
+      </Routes>
     </Router>
   )
 }
