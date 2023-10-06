@@ -14,16 +14,19 @@ const BubbleView = () => {
   const height = window.innerHeight
 
   useEffect(() => {
-
     if (updatedCompaniesList.success) {
       const svg = d3.select(svgRef.current)
 
+      const linkDistance = () => {
+        return Math.floor(Math.random() * 700)
+      }
+
       const simulation = d3
         .forceSimulation(updatedCompaniesList.result.data)
-        .force('charge', d3.forceManyBody().strength(-250))
+        .force('charge', d3.forceManyBody().strength(-200))
         .force('center', d3.forceCenter(width / 2, height / 2))
-        .force('x', d3.forceX(width / 2).strength(0.1))
-        .force('y', d3.forceY(height / 2).strength(0.1))
+        .force('x', d3.forceX(width / 2).strength(0.01))
+        .force('y', d3.forceY(height / 2).strength(0.06))
         .force(
           'link',
           d3
@@ -32,10 +35,6 @@ const BubbleView = () => {
             .distance(linkDistance)
         )
 
-      function linkDistance() {
-        return Math.floor(Math.random() * 700)
-      }
-      // Create links
       const link = svg
         .selectAll('.link')
         .data(updatedCompaniesList.links)
@@ -58,7 +57,7 @@ const BubbleView = () => {
         .append('text')
         .text((d) => d.name)
         .attr('text-anchor', 'middle')
-        .attr('dy', 4) 
+        .attr('dy', 4)
         .style('font-size', '8px')
 
       simulation.on('tick', () => {
@@ -78,7 +77,7 @@ const BubbleView = () => {
         simulation.stop()
       }
     }
-  }, [updatedCompaniesList]) 
+  }, [updatedCompaniesList])
 
   useEffect(() => {
     if (updatedCompaniesList.success) {
@@ -93,11 +92,11 @@ const BubbleView = () => {
           .attr('y1', (d) => d.source.y)
           .attr('x2', (d) => d.target.x)
           .attr('y2', (d) => d.target.y)
-      }, 30) 
+      }, 30)
 
       return () => clearInterval(interval)
     }
-  }, [updatedCompaniesList]) 
+  }, [updatedCompaniesList])
 
   return (
     updatedCompaniesList.success && (
