@@ -29,7 +29,7 @@ const BubbleView = () => {
 
     function linkDistance() {
       // Generate a random distance between 100 and 300
-      return Math.floor(Math.random() * (700))
+      return Math.floor(Math.random() * 700)
     }
     // Create links
     const link = svg
