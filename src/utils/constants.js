@@ -1,3 +1,5 @@
+import { Menu } from 'antd'
+
 export const filterCount = 7
 
 export const companiesLogos = [
@@ -19,6 +21,13 @@ export const contactsLogos = [
   '/icons/people6.svg',
   '/icons/people7.svg',
 ]
+
+export const menu = (
+  <Menu>
+    <Menu.Item key='profile'>Profile</Menu.Item>
+    <Menu.Item key='logout'>Logout</Menu.Item>
+  </Menu>
+)
 
 export const filterOptions = [
   {

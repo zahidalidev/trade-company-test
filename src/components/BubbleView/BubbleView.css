@@ -1,6 +1,0 @@
-/* BubbleView.css */
-.bubble-view {
-  position: relative;
-  width: 100%;
-  height: calc(100vh - 100px); /* Adjusted height considering the header height */
-}

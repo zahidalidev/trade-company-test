@@ -4,7 +4,7 @@ import React, { useMemo, useState } from 'react'
 import { RiFilter2Line } from 'react-icons/ri'
 import { useDispatch, useSelector } from 'react-redux'
 
-import BubbleView from 'components/BubbleView/BubbleView'
+import BubbleView from 'components/BubbleView'
 import { createLinks } from 'utils/helpers'
 import { companiesLogos, contactsLogos, filterCount, filterOptions } from 'utils/constants'
 import FilterModal from 'components/FilterModal'
@@ -71,11 +71,24 @@ const Tabs = () => {
     dispatch(FILTER_COMPANIES(updatedCompanies))
   }
 
+  const handleSearch = (event) => {
+    const value = event.target.value
+
+    const filteredContacts = contacts.allData.filter(contact => contact.firstName?.includes(value.toLowerCase()))
+    const filteredCompanies = companies.allData.filter(company => company.name?.includes(value.toLowerCase()))
+  
+    const updatedContacts = createLinks(filteredContacts)
+    const updatedCompanies = createLinks(filteredCompanies)
+
+    dispatch(FILTER_COTACTS(updatedContacts))
+    dispatch(FILTER_COMPANIES(updatedCompanies))
+  }
+
   return (
     <>
       <Row justify='start' align='middle'>
         <Col className='search-col'>
-          <Input.Search placeholder='Search' className='search-input' />
+          <Input.Search onChange={handleSearch} placeholder='Search' className='search-input' />
         </Col>
         <Col className='filter-col'>
           <div className='filter-container' onClick={showModal}>
