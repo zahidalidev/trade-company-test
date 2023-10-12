@@ -2,11 +2,14 @@ import { Col, Divider, Flex, Input, Row, Typography } from 'antd'
 import { cloneDeep } from 'lodash'
 import React, { useState } from 'react'
 import { RiFilter2Line } from 'react-icons/ri'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import BubbleView from 'components/BubbleView/BubbleView'
+import { createLinks } from 'utils/helpers'
+import { companiesLogos, contactsLogos, filterCount, filterOptions } from 'utils/constants'
 import FilterModal from 'components/FilterModal'
-import { filterCount } from 'utils/constants'
+import { FILTER_COTACTS } from 'store/contacts'
+import { FILTER_COMPANIES } from 'store/companies'
 
 import './styles.css'
 
@@ -15,13 +18,16 @@ const { Text } = Typography
 const Tabs = () => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [activeTab, setActiveTab] = useState('companies')
+  const [filters, setFilters] = useState(filterOptions)
 
+  const dispatch = useDispatch()
   const companies = useSelector((state) => state.companies)
   const contacts = useSelector((state) => state.contacts)
   const companiesList = cloneDeep(companies)
   const contactsList = cloneDeep(contacts)
   const data = activeTab === 'companies' ? companiesList.data : contactsList.data
   const links = activeTab === 'companies' ? companiesList.links : contactsList.links
+  const logos = activeTab === 'companies' ? companiesLogos : contactsLogos
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -31,30 +37,39 @@ const Tabs = () => {
     setIsModalVisible(false)
   }
 
-  const handleChange = (value) => {
-    console.log(`selected ${value}`)
+  const handleChange = (value, index) => {
+    let copyFilters = [...filters]
+    copyFilters[index].selectedValues = value
+    setFilters(copyFilters)
   }
 
-  const logos =
-    activeTab === "companies"
-      ? [
-          "/icons/companyLogo2.svg",
-          "/icons/companyLogo3.svg",
-          "/icons/companyLogo4.svg",
-          "/icons/companyLogo5.svg",
-          "/icons/companyLogo6.svg",
-          "/icons/companyLogo7.svg",
-          "/icons/companyLogo8.svg",
-        ]
-      : [
-          "/icons/people1.svg",
-          "/icons/people2.svg",
-          "/icons/people3.svg",
-          "/icons/people4.svg",
-          "/icons/people5.svg",
-          "/icons/people6.svg",
-          "/icons/people7.svg",
-        ];
+  const handleFilter = () => {
+    const filteredContacts = []
+    const filteredCompanies = []
+    for (let i = 0; i < contacts.allData.length; i++) {
+      for (let j = 0; j < filters.length; j++) {
+        if (filters[j].selectedValues.includes(contacts.allData[i][filters[j].name]))
+          filteredContacts.push(contacts.allData[i])
+      }
+    }
+
+    for (let i = 0; i < companies.allData.length; i++) {
+      for (let j = 0; j < filters.length; j++) {
+        if (filters[j].selectedValues.includes(companies.allData[i][filters[j].name]))
+          filteredCompanies.push(companies.allData[i])
+      }
+    }
+
+    const updatedContacts = createLinks(
+      filteredContacts.length === 0 ? contacts.allData : filteredContacts
+    )
+    const updatedCompanies = createLinks(
+      filteredCompanies.length === 0 ? companies.allData : filteredCompanies
+    )
+
+    dispatch(FILTER_COTACTS(updatedContacts))
+    dispatch(FILTER_COMPANIES(updatedCompanies))
+  }
 
   return (
     <>
@@ -78,7 +93,7 @@ const Tabs = () => {
                 <span className='companies-people-count'>{companies.data.length}</span>
               </Text>
             </Col>
-            <Col className={activeTab === 'people' && 'company-tab'} >
+            <Col className={activeTab === 'people' && 'company-tab'}>
               <Text onClick={() => setActiveTab('people')} className='top-headings'>
                 People
                 <span className='companies-people-count'>{contacts.data.length}</span>
@@ -91,6 +106,8 @@ const Tabs = () => {
           isModalVisible={isModalVisible}
           handleCancel={handleCancel}
           handleChange={handleChange}
+          filters={filters}
+          handleFilter={handleFilter}
         />
       </Row>
       <BubbleView activeTab={activeTab} data={data} links={links} logos={logos} />
