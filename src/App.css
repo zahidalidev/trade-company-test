@@ -1,0 +1,9 @@
+.app-container {
+  padding: 0px 40px 0px 40px;
+  background: #f0f0f0;
+}
+
+.app-content {
+  background: #fff;
+  border-radius: 5px;
+}

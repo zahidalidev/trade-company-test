@@ -1,0 +1,35 @@
+.header {
+  background: #f0f0f0;
+  padding: 10px 0px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logoText {
+  margin-right: 10px;
+  color: #808080;
+}
+
+.search {
+  width: 300px;
+  margin-right: 10px;
+}
+
+.rightContent {
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.icon {
+  font-size: 18px;
+  margin-right: 0px;
+}
+
+.profileName {
+  margin-left: 8px;
+  color: #808080;
+}

@@ -1,0 +1,36 @@
+.modal-container {
+  top: 180px;
+  right: 200px;
+}
+
+.modal-fields {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.modal-select {
+  flex-basis: 20%;
+  padding: 8px;
+}
+
+.modal-row {
+  width: 100%;
+}
+
+.modal-button {
+  padding: 9px 30px;
+  display: flex;
+  align-items: center;
+}
+
+.model-apply-button {
+  background: #ff681a;
+  color: #fff;
+  padding: 9px 30px;
+  display: flex;
+  align-items: center;
+}
+
+.modal-apply-c {
+  color: #fff;
+}

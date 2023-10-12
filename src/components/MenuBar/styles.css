@@ -1,0 +1,31 @@
+.menu-container {
+  border-bottom-color: #ff7c16;
+}
+
+.menuRow {
+  padding: 0 0 10px 0;
+  background: #f0f0f0;
+}
+
+.menu-items {
+  color: #000;
+  background: #f0f0f0;
+  padding: 0px;
+}
+
+.menu-border {
+  border-bottom: 2px solid #ff681a;
+  padding-bottom: 16px;
+}
+
+.topHeadings {
+  color: 'var(--Cool-Dark-1; #24292e)';
+  font-family: 'Barlow';
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.menu-item {
+  background: #f0f0f0;
+  padding-right: 10px;
+}
