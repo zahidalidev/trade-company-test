@@ -48,7 +48,7 @@
 }
 
 .tab-divider-bottom {
-  margin-bottom: 0px;
+  margin-top: -1px;
 }
 
 .tab-col {
@@ -57,6 +57,7 @@
 
 .company-tab {
   border-bottom: 1px solid #ff681a;
+  padding-bottom: 15px;
 }
 
 .top-headings {
