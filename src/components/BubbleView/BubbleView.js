@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import * as d3 from 'd3'
 import './BubbleView.css'
 import { useSelector } from 'react-redux'
@@ -6,30 +6,31 @@ import { cloneDeep } from 'lodash'
 
 import ModalView from './ModalView'
 
-const BubbleView = () => {
-  const companies = useSelector((state) => state.companies)
-  const companiesList = cloneDeep(companies)
+const BubbleView = ({ activeTab, data, links }) => {
+  const [selectedBubbleIndex, setSelectedBubbleIndex] = useState(null)
 
   const svgRef = useRef()
+
   const width = window.innerWidth
   const height = Math.min(window.innerHeight, 0.5 * window.innerHeight)
-
-  const [selectedBubbleIndex, setSelectedBubbleIndex] = useState(null)
 
   const handleBubbleClick = (index) => {
     setSelectedBubbleIndex(index)
   }
 
   useEffect(() => {
-    if (companiesList.data.length) {
+    if (data.length) {
       const svg = d3.select(svgRef.current)
+
+      svg.selectAll('.node').remove();
+      svg.selectAll('.link').remove();
 
       const linkDistance = () => {
         return Math.floor(Math.random() * 700)
       }
 
       const simulation = d3
-        .forceSimulation(companiesList.data)
+        .forceSimulation(data)
         .force('charge', d3.forceManyBody().strength(-100))
         .force('center', d3.forceCenter(width / 0.4, height / 1.3))
         .force('x', d3.forceX(width / 2).strength())
@@ -37,14 +38,14 @@ const BubbleView = () => {
         .force(
           'link',
           d3
-            .forceLink(companiesList.links)
+            .forceLink(links)
             .id((d) => d._id)
             .distance(linkDistance)
         )
 
       const link = svg
         .selectAll('.link')
-        .data(companiesList.links)
+        .data(links)
         .enter()
         .append('line')
         .attr('class', 'link')
@@ -53,7 +54,7 @@ const BubbleView = () => {
 
       const nodes = svg
         .selectAll('.node')
-        .data(companiesList.data)
+        .data(data)
         .enter()
         .append('g')
         .attr('class', 'node')
@@ -75,18 +76,25 @@ const BubbleView = () => {
       nodes
         .append('image')
         .attr('xlink:href', (d) => (d.logo ? d.logo : getRandomLogo()))
-        .attr('x', (d) => -Math.min(20, d.name.length * 2))
+        .attr(
+          'x',
+          (d) =>
+            -Math.min(20, activeTab === 'companies' ? d.name.length * 2 : d.firstname.length * 2)
+        )
         .attr('y', -20)
-        .attr('width', (d) => Math.min(40, d.name.length * 4))
+        .attr('width', (d) =>
+          Math.min(40, activeTab === 'companies' ? d.name.length * 4 : d.firstname.length * 4)
+        )
         .attr('height', 40)
 
       nodes
         .append('text')
         .text((d) => {
-          if (d.name.length > 10) {
-            return d.name.substring(0, 10).toUpperCase() + '...'
+          const name = activeTab === 'companies' ? d.name : d.firstname
+          if (name.length > 10) {
+            return name.substring(0, 10).toUpperCase() + '...'
           }
-          return d.name.toUpperCase()
+          return name.toUpperCase()
         })
         .attr('text-anchor', 'middle')
         .attr('dy', 4)
@@ -111,9 +119,9 @@ const BubbleView = () => {
         simulation.stop()
       }
     }
-  }, [companiesList])
+  }, [data, links, activeTab])
 
-  function wrap(text, width) {
+  const wrap = useCallback((text, width) => {
     text.each(function () {
       const text = d3.select(this)
       const words = text.text().split(/\s+/).reverse()
@@ -145,10 +153,10 @@ const BubbleView = () => {
         }
       }
     })
-  }
+  }, [data, links, activeTab]);
 
   useEffect(() => {
-    if (companiesList.data.length) {
+    if (data.length) {
       const interval = setInterval(() => {
         d3.select(svgRef.current)
           .selectAll('.node')
@@ -164,7 +172,7 @@ const BubbleView = () => {
 
       return () => clearInterval(interval)
     }
-  }, [companiesList, width])
+  }, [data, links, width, activeTab])
 
   return (
     <>

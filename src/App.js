@@ -6,11 +6,12 @@ import { useDispatch } from 'react-redux'
 import { createLinks } from 'utils/helpers'
 import Footer from 'components/Footer'
 import { fetchAllCompanies } from 'api/company'
+import { fetchAllContacts } from 'api/contacts'
 import MenuBar from 'components/MenuBar'
 import Navbar from 'components/Navbar'
-import Routes from 'components/Routes'
 import Tabs from 'components/Tabs'
 import { UPDATE_COMPANIES } from 'store/companies'
+import { UPDATE_COTACTS } from 'store/contacts'
 
 import './App.css'
 
@@ -27,8 +28,17 @@ const App = () => {
     } catch (error) {}
   }
 
+  const getAllCotacts = async () => {
+    try {
+      const { result } = await fetchAllContacts()
+      const updatedData = createLinks(result.data)
+      dispatch(UPDATE_COTACTS(updatedData))
+    } catch (error) {}
+  }
+
   useEffect(() => {
     getAllCompanies()
+    getAllCotacts()
   }, [])
 
   return (
@@ -38,7 +48,6 @@ const App = () => {
         <MenuBar />
         <Content className='app-content'>
           <Tabs />
-          <Routes />
         </Content>
         <Footer />
       </Layout>

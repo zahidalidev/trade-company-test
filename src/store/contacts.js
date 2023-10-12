@@ -2,17 +2,16 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   links: [],
-  result: { data: [] },
-  success: false,
+  data: [],
 }
 
 const slice = createSlice({
   name: 'companies',
   initialState,
   reducers: {
-    UPDATE_COMPANIES: (companies, action) => action.payload,
+    UPDATE_COTACTS: (companies, action) => action.payload,
   },
 })
 
-export const { UPDATE_COMPANIES } = slice.actions
+export const { UPDATE_COTACTS } = slice.actions
 export default slice.reducer
