@@ -74,7 +74,7 @@ const Tabs = () => {
   const handleSearch = (event) => {
     const value = event.target.value
 
-    const filteredContacts = contacts.allData.filter(contact => contact.firstName?.includes(value.toLowerCase()))
+    const filteredContacts = contacts.allData.filter(contact => contact.firstname?.includes(value.toLowerCase()))
     const filteredCompanies = companies.allData.filter(company => company.name?.includes(value.toLowerCase()))
   
     const updatedContacts = createLinks(filteredContacts)
