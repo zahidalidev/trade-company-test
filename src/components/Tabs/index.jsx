@@ -1,6 +1,6 @@
 import { Col, Divider, Flex, Input, Row, Typography } from 'antd'
 import { cloneDeep } from 'lodash'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { RiFilter2Line } from 'react-icons/ri'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -110,7 +110,12 @@ const Tabs = () => {
           handleFilter={handleFilter}
         />
       </Row>
-      <BubbleView activeTab={activeTab} data={data} links={links} logos={logos} />
+      {useMemo(
+        () => (
+          <BubbleView activeTab={activeTab} data={data} links={links} logos={logos} />
+        ),
+        [activeTab, data, links, logos]
+      )}
     </>
   )
 }

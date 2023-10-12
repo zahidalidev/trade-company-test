@@ -66,7 +66,7 @@ const BubbleView = ({ activeTab, data, links, logos }) => {
         .append("circle")
         .attr("cx", 0)
         .attr("cy", 0)
-        .attr("r", 20); // Adjust the radius as needed for the circle shape
+        .attr("r", 20);
 
       const nodes = svg
         .selectAll(".node")
