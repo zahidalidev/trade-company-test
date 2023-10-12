@@ -53,7 +53,7 @@ If everything when fine, you should run
 
 ### Templating
 
-- [Material UI](https://mui.com/material-ui/getting-started/overview/) for some structuring.
+- [Ant Design](https://ant.design/components/overview/) for some structuring.
 
 ### JavaScript
 
@@ -66,8 +66,8 @@ If everything when fine, you should run
 
 ## Notes
 - Implemented a Company and People screens to show their relations using nodes and links.
-- Implemented filter functionaly based on user types for both companies and prople.
-- Implemented search functionaly based on user or company names.
+- Implemented filter functionaly based on user types for both companies and people.
+- Implemented search functionaly based on user and company names.
 - Properly handle UI.
 - Added ESLint and Stylelint for consistency and better code quality.
 
