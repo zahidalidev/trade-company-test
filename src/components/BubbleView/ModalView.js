@@ -146,16 +146,16 @@ const ModalView = ({ selectedBubbleIndex, setSelectedBubbleIndex }) => {
           <Flex style={{ width: "45%" }}>
             <div style={{ position: "relative", zIndex: 1 }}>
               <Image
-                src="/icons/Profile2.svg"
-                alt="Profile 2"
+                src="/icons/pic2.svg"
+                alt="pic 2"
                 width={100}
                 height={100}
               />
             </div>
             <div style={{ position: "relative", zIndex: 2 }}>
               <Image
-                src="/icons/Profile3.svg"
-                alt="Profile 3"
+                src="/icons/pic3.svg"
+                alt="pic 3"
                 width={100}
                 height={100}
                 style={styles.profile3}
@@ -163,8 +163,8 @@ const ModalView = ({ selectedBubbleIndex, setSelectedBubbleIndex }) => {
             </div>
             <div style={{ position: "relative", zIndex: 3 }}>
               <Image
-                src="/icons/Profile1.svg"
-                alt="Profile 1"
+                src="/icons/pic1.svg"
+                alt="pic 1"
                 width={100}
                 height={100}
                 style={styles.profile1}
