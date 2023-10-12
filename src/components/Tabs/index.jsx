@@ -35,6 +35,27 @@ const Tabs = () => {
     console.log(`selected ${value}`)
   }
 
+  const logos =
+    activeTab === "companies"
+      ? [
+          "/icons/companyLogo2.svg",
+          "/icons/companyLogo3.svg",
+          "/icons/companyLogo4.svg",
+          "/icons/companyLogo5.svg",
+          "/icons/companyLogo6.svg",
+          "/icons/companyLogo7.svg",
+          "/icons/companyLogo8.svg",
+        ]
+      : [
+          "/icons/people1.svg",
+          "/icons/people2.svg",
+          "/icons/people3.svg",
+          "/icons/people4.svg",
+          "/icons/people5.svg",
+          "/icons/people6.svg",
+          "/icons/people7.svg",
+        ];
+
   return (
     <>
       <Row justify='start' align='middle'>
@@ -72,7 +93,7 @@ const Tabs = () => {
           handleChange={handleChange}
         />
       </Row>
-      <BubbleView activeTab={activeTab} data={data} links={links} />
+      <BubbleView activeTab={activeTab} data={data} links={links} logos={logos} />
     </>
   )
 }

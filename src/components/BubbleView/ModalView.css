@@ -2,3 +2,93 @@
 .newStyle .ant-modal-header {
   padding: 0;
 }
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.fontWeight400 {
+  font-weight: 400;
+}
+
+.fontWeight500 {
+  font-weight: 500;
+}
+
+.fontWeight600 {
+  font-weight: 600;
+}
+
+.marginTop10 {
+  margin-top: 10px;
+}
+
+.marginTop18 {
+  margin-top: 18px;
+}
+
+.colorFF681A {
+  color: #FF681A;
+}
+
+.color24292E {
+  color: #24292E;
+}
+
+.color24292ED9 {
+  color: #24292ED9;
+}
+
+.buttonBlock {
+  width: 100%;
+  font-size: 14px;
+}
+
+.mainTitle {
+  color: var(--Cool-Dark-1, #000);
+  text-align: start;
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin-top: 10px;
+}
+
+.textAlignStart {
+  text-align: start;
+}
+
+.textAlignCenter {
+  text-align: center;
+}
+
+.secondaryTitle {
+  font-family: Barlow;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.requestButton {
+  background: #FF681A;
+  color: #fff;
+  border: 0px;
+}
+
+.wishButton {
+  padding-left: 12px;
+  font-family: Barlow;
+}
+
+.profile3 {
+  margin: 0px -50px;
+}
+
+.profile1 {
+  margin: 0px -100px;
+}
