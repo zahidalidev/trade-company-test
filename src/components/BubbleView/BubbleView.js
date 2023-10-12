@@ -10,7 +10,7 @@ import "./BubbleView.css";
 import { useSelector } from "react-redux";
 import { cloneDeep } from "lodash";
 
-import ModalView from "./ModalView";
+import ModalView from "../ModalView";
 
 const BubbleView = ({ activeTab, data, links, logos }) => {
   const [selectedBubbleIndex, setSelectedBubbleIndex] = useState(null);
@@ -206,6 +206,7 @@ const BubbleView = ({ activeTab, data, links, logos }) => {
         <ModalView
           selectedBubbleIndex={selectedBubbleIndex}
           setSelectedBubbleIndex={setSelectedBubbleIndex}
+          activeTab={activeTab}
         />
       )}
     </>

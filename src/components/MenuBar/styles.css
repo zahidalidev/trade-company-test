@@ -1,5 +1,5 @@
 .menu-container {
-  border-bottom-color: #ff7c16;
+background-color: #f0f0f0;
 }
 
 .menuRow {
@@ -13,11 +13,6 @@
   padding: 0px;
 }
 
-.menu-border {
-  border-bottom: 2px solid #ff681a;
-  padding-bottom: 16px;
-}
-
 .topHeadings {
   color: 'var(--Cool-Dark-1; #24292e)';
   font-family: 'Barlow';
@@ -28,4 +23,8 @@
 .menu-item {
   background: #f0f0f0;
   padding-right: 10px;
+}
+
+.ant-menu-light.ant-menu-horizontal>.ant-menu-item-selected::after {
+  border-bottom-color: #ff681a;
 }
