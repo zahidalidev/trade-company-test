@@ -14,6 +14,7 @@ const { Text } = Typography;
 const { Footer } = Layout;
 import WishIcon from "../icons/WishIcon";
 import "./ModalView.css";
+import "./BubbleView.css";
 
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 const ModalView = ({ selectedBubbleIndex, setSelectedBubbleIndex }) => {
@@ -22,9 +23,13 @@ const ModalView = ({ selectedBubbleIndex, setSelectedBubbleIndex }) => {
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
+      padding: "24px",
     },
-    textCenter: {
-      textAlign: "center",
+    fontWeight400: {
+      fontWeight: 400,
+    },
+    fontWeight500: {
+      fontWeight: 500,
     },
     fontWeight600: {
       fontWeight: 600,
@@ -32,15 +37,51 @@ const ModalView = ({ selectedBubbleIndex, setSelectedBubbleIndex }) => {
     marginTop10: {
       marginTop: "10px",
     },
+    marginTop18: {
+      marginTop: "18px",
+    },
     colorFF681A: {
       color: "#FF681A",
+    },
+    color24292E: {
+      color: "#24292E",
+    },
+    color24292ED9: {
+      color: "#24292ED9",
     },
     buttonBlock: {
       width: "100%",
       fontSize: "14px",
     },
+    mainTitle: {
+      color: "var(--Cool-Dark-1, #000)",
+      textAlign: "start",
+      fontFamily: "Montserrat",
+      fontSize: "18px",
+      fontStyle: "normal",
+      fontWeight: 600,
+      lineHeight: "normal",
+      marginTop: "10px",
+    },
 
-    // Add more styles as needed
+    textAlignStart: {
+      textAlign: "start",
+    },
+
+    textAlignCenter: {
+      textAlign: "center",
+    },
+    secondaryTitle: {
+      fontFamily: "Barlow",
+      fontSize: "14px",
+      fontStyle: "normal",
+      fontWeight: 400,
+      lineHeight: "normal",
+    },
+    requestButton: { background: "#FF681A", color: "#fff", border: "0px" },
+
+    profile3: { margin: "0px -50px" },
+    profile1: { margin: "0px -100px" },
   };
 
   return (
@@ -49,15 +90,9 @@ const ModalView = ({ selectedBubbleIndex, setSelectedBubbleIndex }) => {
       onCancel={() => setSelectedBubbleIndex(null)}
       footer={null}
       centered
-      padding={0}
+      className="newStyle"
     >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
+      <div style={styles.container}>
         <Image
           src={selectedBubbleIndex?.logo || "/icons/company_logo.svg"}
           alt="Company Logo"
@@ -67,110 +102,94 @@ const ModalView = ({ selectedBubbleIndex, setSelectedBubbleIndex }) => {
           fallback="/icons/company_logo.svg"
           borderRadius="50px"
         />
+        <Text style={styles.mainTitle}>{selectedBubbleIndex?.name}</Text>
         <Text
           style={{
-            color: "var(--Cool-Dark-1, #24292E)",
-            textAlign: "center",
-            fontFamily: "Montserrat",
-            fontSize: "18px",
-            fontStyle: "normal",
-            fontWeight: 600,
-            lineHeight: "normal",
-            marginTop: "10px",
-          }}
-        >
-          {selectedBubbleIndex?.name}
-        </Text>
-        <Text
-          style={{
-            color: "--Cool-Dark-3, rgba(36, 41, 46, 0.60))",
-            textAlign: "center",
-            fontFamily: "Barlow",
-            fontSize: "14px",
-            fontStyle: "normal",
-            fontWeight: 400,
-            lineHeight: "18px",
-            marginTop: "10px",
+            ...styles.secondaryTitle,
+            ...styles.marginTop10,
+            ...styles.textAlignCenter,
+            ...styles.color24292E,
           }}
         >
           {selectedBubbleIndex?.country ?? "United Arab Emirates, Dubai"}
         </Text>
         <Text
           style={{
-            color: "var(--Cool-Dark-2, rgba(36, 41, 46, 0.85))",
-            textAlign: "center",
-            fontFamily: "Barlow",
-            fontSize: "14px",
-            fontStyle: "normal",
-            fontWeight: 400,
-            lineHeight: "18px",
-            marginTop: "18px",
+            ...styles.secondaryTitle,
+            ...styles.marginTop18,
+            ...styles.textAlignCenter,
+            ...styles.color24292E,
           }}
         >
           {selectedBubbleIndex?.brief?.split(" ")?.slice(0, 10)?.join(" ")}
         </Text>
         <Flex gap={10}>
           <Text>
-            <span style={{ fontWeight: 600 }}>235</span> Connections |
+            <span style={styles.fontWeight600}>235</span> Connections |
           </Text>
           <Text>
-            <span style={{ fontWeight: 600 }}>35</span> Pipeline |{" "}
+            <span style={styles.fontWeight600}>35</span> Pipeline |{" "}
           </Text>
           <Text>
-            <span style={{ fontWeight: 600 }}>
+            <span style={styles.fontWeight600}>
               {selectedBubbleIndex.totalMeetings ?? 0}
             </span>{" "}
             Total Meetings
           </Text>
         </Flex>
 
-        <Text style={{ color: "#FF681A" }}>
+        <Text style={styles.colorFF681A}>
           {selectedBubbleIndex.website ?? "Aladdib2b.com"}
         </Text>
 
         <Flex>
-          <Flex align="center">
-            <Avatar></Avatar> <Avatar></Avatar> <Avatar></Avatar>
+          <Flex style={{ width: "45%" }}>
+            <div style={{ position: "relative", zIndex: 1 }}>
+              <Image
+                src="/icons/Profile2.svg"
+                alt="Profile 2"
+                width={100}
+                height={100}
+              />
+            </div>
+            <div style={{ position: "relative", zIndex: 2 }}>
+              <Image
+                src="/icons/Profile3.svg"
+                alt="Profile 3"
+                width={100}
+                height={100}
+                style={styles.profile3}
+              />
+            </div>
+            <div style={{ position: "relative", zIndex: 3 }}>
+              <Image
+                src="/icons/Profile1.svg"
+                alt="Profile 1"
+                width={100}
+                height={100}
+                style={styles.profile1}
+              />
+            </div>
           </Flex>
+
           <Flex vertical="vertical">
+            <Text style={styles.mainTitle}>Alexandra Maldonado</Text>
             <Text
               style={{
-                color: "var(--Cool-Dark-1, #000)",
-                textAlign: "start",
-                fontFamily: "Montserrat",
-                fontSize: "18px",
-                fontStyle: "normal",
-                fontWeight: 600,
-                lineHeight: "normal",
-                marginTop: "10px",
-              }}
-            >
-              Alexandra Maldonado
-            </Text>
-            <Text
-              style={{
-                color: "var(--Cool-Dark-1, #24292E)",
-                textAlign: "start",
-                fontFamily: "Barlow",
-                fontSize: "14px",
-                fontStyle: "normal",
-                fontWeight: 400,
-                lineHeight: "normal",
-                marginTop: "10px",
+                ...styles.secondaryTitle,
+                ...styles.marginTop18,
+                ...styles.textAlignStart,
+                ...styles.color24292E,
               }}
             >
               Chief Executive Officer
             </Text>
             <Text
               style={{
-                color: "var(--Cool-Dark-1, #24292E)",
-                textAlign: "start",
-                fontFamily: "Barlow",
-                fontSize: "14px",
-                fontStyle: "normal",
-                fontWeight: 400,
-                lineHeight: "normal",
-                marginTop: "10px",
+                ...styles.secondaryTitle,
+                ...styles.marginTop10,
+                ...styles.textAlignStart,
+                ...styles.color24292E,
               }}
             >
               Total 9 attendees
@@ -181,23 +200,19 @@ const ModalView = ({ selectedBubbleIndex, setSelectedBubbleIndex }) => {
           direction="vertical"
           style={{ width: "100%", paddingTop: "31px" }}
         >
-          <Button
-            size="large"
-            block
-            style={{ background: "#FF681A", color: "#fff", border: "0px" }}
-          >
+          <Button size="large" block style={styles.requestButton}>
             <Text strong style={{ color: "#fff" }}>
               Request Meeting
             </Text>
           </Button>
           <Button size="large" block>
-            <Text strong style={{ color: "#24292ED9" }}>
+            <Text strong style={styles.color24292ED9}>
               Request for Quotation
             </Text>
           </Button>
 
           <Button size="large" block>
-            <Text strong style={{ color: "#24292ED9" }}>
+            <Text strong style={styles.color24292ED9}>
               View compay Profile
             </Text>
           </Button>
@@ -213,9 +228,9 @@ const ModalView = ({ selectedBubbleIndex, setSelectedBubbleIndex }) => {
               <WishIcon />
               <Text
                 style={{
-                  color: "#24292ED9",
+                  ...styles.color24292ED9,
+                  ...styles.fontWeight500,
                   paddingLeft: "12px",
-                  fontWeight: "500",
                   fontFamily: "Barlow",
                 }}
               >

@@ -1,3 +1,4 @@
-.ant-modal-body {
-    padding: 0;
-  }
+.newStyle .ant-modal-content,
+.newStyle .ant-modal-header {
+  padding: 0;
+}
