@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   links: [],
-  data: [],
+  result: { data: [] },
+  success: false,
 }
 
 const slice = createSlice({

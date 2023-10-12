@@ -1,189 +1,174 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import * as d3 from "d3";
-import "./BubbleView.css";
-import { useSelector } from "react-redux";
-import { cloneDeep } from "lodash";
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import * as d3 from 'd3'
+import './BubbleView.css'
+import { useSelector } from 'react-redux'
+import { cloneDeep } from 'lodash'
 
-import ModalView from "./ModalView";
+import ModalView from './ModalView'
 
 const BubbleView = () => {
-  const updatedCompanies = useSelector((state) => state.companies);
-  const updatedCompaniesList = cloneDeep(updatedCompanies);
+  const companies = useSelector((state) => state.companies)
+  const companiesList = cloneDeep(companies)
 
-  // useEffect(() => {
-  //   console.log("updatedCompaniesList ----------->: ", updatedCompaniesList);
-  // }, [updatedCompaniesList]);
+  const svgRef = useRef()
+  const width = window.innerWidth
+  const height = Math.min(window.innerHeight, 0.5 * window.innerHeight)
 
-  const svgRef = useRef();
-  const width = window.innerWidth;
-  const height = Math.min(window.innerHeight, 0.5 * window.innerHeight);
-
-  const [selectedBubbleIndex, setSelectedBubbleIndex] = useState(null);
+  const [selectedBubbleIndex, setSelectedBubbleIndex] = useState(null)
 
   const handleBubbleClick = (index) => {
-    // console.log("INdex  : ", index);
-    setSelectedBubbleIndex(index);
-  };
-
-  useEffect(() => {
-    if (updatedCompaniesList.success) {
-      const svg = d3.select(svgRef.current);
-
-      const linkDistance = () => {
-        return Math.floor(Math.random() * 700);
-      };
-
-      const simulation = d3
-        .forceSimulation(updatedCompaniesList.result.data)
-        .force("charge", d3.forceManyBody().strength(-100))
-        .force("center", d3.forceCenter(width / 0.4, height / 1.3))
-        .force("x", d3.forceX(width / 2).strength())
-        .force("y", d3.forceY(height / 2).strength(0.06))
-        .force(
-          "link",
-          d3
-            .forceLink(updatedCompaniesList.links)
-            .id((d) => d._id)
-            .distance(linkDistance)
-        );
-
-      const link = svg
-        .selectAll(".link")
-        .data(updatedCompaniesList.links)
-        .enter()
-        .append("line")
-        .attr("class", "link")
-        .style("stroke", "gray")
-        .style("stroke-width", 0.5);
-
-      const nodes = svg
-        .selectAll(".node")
-        .data(updatedCompaniesList.result.data)
-        .enter()
-        .append("g")
-        .attr("class", "node")
-        .on("click", (d, i) => handleBubbleClick(i));
-
-      // Select a random logo from the available options
-      const getRandomLogo = () => {
-        const logoOptions = [
-          "/icons/companyLogo2.svg",
-          "/icons/companyLogo3.svg",
-          "/icons/companyLogo4.svg",
-          "/icons/companyLogo5.svg",
-          "/icons/companyLogo6.svg",
-          "/icons/companyLogo7.svg",
-          "/icons/companyLogo8.svg",
-        ];
-        return logoOptions[Math.floor(Math.random() * logoOptions.length)];
-      };
-
-      nodes
-        .append("image")
-        .attr("xlink:href", (d) => (d.logo ? d.logo : getRandomLogo()))
-        .attr("x", (d) => -Math.min(20, d.name.length * 2)) // Adjust the x-position based on name length
-        .attr("y", -20)
-        .attr("width", (d) => Math.min(40, d.name.length * 4)) // Adjust the width based on name length
-        .attr("height", 40);
-
-      nodes
-        .append("text")
-        .text((d) => {
-          if (d.name.length > 10) {
-            return d.name.substring(0, 10).toUpperCase() + "...";
-          }
-          return d.name.toUpperCase();
-        })
-        .attr("text-anchor", "middle")
-        .attr("dy", 4)
-        .style("font-size", "8px")
-        .style("font-weight", "bold") // Set font weight to bold
-        .call(wrap, 60);
-
-      simulation.on("tick", () => {
-        nodes.attr(
-          "transform",
-          (d) => `translate(${(d.x = (d.x + width + 2) % (width + 4))},${d.y})`
-        );
-
-        link
-          .attr("x1", (d) => d.source.x)
-          .attr("y1", (d) => d.source.y)
-          .attr("x2", (d) => d.target.x)
-          .attr("y2", (d) => d.target.y);
-      });
-
-      return () => {
-        simulation.stop();
-      };
-    }
-  }, [updatedCompaniesList]);
-
-  function wrap(text, width) {
-    text.each(function () {
-      const text = d3.select(this);
-      const words = text.text().split(/\s+/).reverse();
-      let word;
-      let line = [];
-      let lineNumber = 0;
-      const lineHeight = 1.1;
-      const y = text.attr("y");
-      const dy = parseFloat(text.attr("dy"));
-      let tspan = text
-        .text(null)
-        .append("tspan")
-        .attr("x", 0)
-        .attr("y", y)
-        .attr("dy", dy + "em");
-      while ((word = words.pop())) {
-        line.push(word);
-        tspan.text(line.join(" "));
-        if (tspan.node().getComputedTextLength() > width) {
-          line.pop();
-          tspan.text(line.join(" "));
-          line = [word];
-          tspan = text
-            .append("tspan")
-            .attr("x", 0)
-            .attr("y", y)
-            .attr("dy", ++lineNumber * lineHeight + dy + "em")
-            .text(word);
-        }
-      }
-    });
+    setSelectedBubbleIndex(index)
   }
 
   useEffect(() => {
-    if (updatedCompaniesList.success) {
+    if (companiesList.data.length) {
+      const svg = d3.select(svgRef.current)
+
+      const linkDistance = () => {
+        return Math.floor(Math.random() * 700)
+      }
+
+      const simulation = d3
+        .forceSimulation(companiesList.data)
+        .force('charge', d3.forceManyBody().strength(-100))
+        .force('center', d3.forceCenter(width / 0.4, height / 1.3))
+        .force('x', d3.forceX(width / 2).strength())
+        .force('y', d3.forceY(height / 2).strength(0.06))
+        .force(
+          'link',
+          d3
+            .forceLink(companiesList.links)
+            .id((d) => d._id)
+            .distance(linkDistance)
+        )
+
+      const link = svg
+        .selectAll('.link')
+        .data(companiesList.links)
+        .enter()
+        .append('line')
+        .attr('class', 'link')
+        .style('stroke', 'gray')
+        .style('stroke-width', 0.5)
+
+      const nodes = svg
+        .selectAll('.node')
+        .data(companiesList.data)
+        .enter()
+        .append('g')
+        .attr('class', 'node')
+        .on('click', (d, i) => handleBubbleClick(i))
+
+      const getRandomLogo = () => {
+        const logoOptions = [
+          '/icons/companyLogo2.svg',
+          '/icons/companyLogo3.svg',
+          '/icons/companyLogo4.svg',
+          '/icons/companyLogo5.svg',
+          '/icons/companyLogo6.svg',
+          '/icons/companyLogo7.svg',
+          '/icons/companyLogo8.svg',
+        ]
+        return logoOptions[Math.floor(Math.random() * logoOptions.length)]
+      }
+
+      nodes
+        .append('image')
+        .attr('xlink:href', (d) => (d.logo ? d.logo : getRandomLogo()))
+        .attr('x', (d) => -Math.min(20, d.name.length * 2))
+        .attr('y', -20)
+        .attr('width', (d) => Math.min(40, d.name.length * 4))
+        .attr('height', 40)
+
+      nodes
+        .append('text')
+        .text((d) => {
+          if (d.name.length > 10) {
+            return d.name.substring(0, 10).toUpperCase() + '...'
+          }
+          return d.name.toUpperCase()
+        })
+        .attr('text-anchor', 'middle')
+        .attr('dy', 4)
+        .style('font-size', '8px')
+        .style('font-weight', 'bold')
+        .call(wrap, 60)
+
+      simulation.on('tick', () => {
+        nodes.attr(
+          'transform',
+          (d) => `translate(${(d.x = (d.x + width + 2) % (width + 4))},${d.y})`
+        )
+
+        link
+          .attr('x1', (d) => d.source.x)
+          .attr('y1', (d) => d.source.y)
+          .attr('x2', (d) => d.target.x)
+          .attr('y2', (d) => d.target.y)
+      })
+
+      return () => {
+        simulation.stop()
+      }
+    }
+  }, [companiesList])
+
+  function wrap(text, width) {
+    text.each(function () {
+      const text = d3.select(this)
+      const words = text.text().split(/\s+/).reverse()
+      let word
+      let line = []
+      let lineNumber = 0
+      const lineHeight = 1.1
+      const y = text.attr('y')
+      const dy = parseFloat(text.attr('dy'))
+      let tspan = text
+        .text(null)
+        .append('tspan')
+        .attr('x', 0)
+        .attr('y', y)
+        .attr('dy', dy + 'em')
+      while ((word = words.pop())) {
+        line.push(word)
+        tspan.text(line.join(' '))
+        if (tspan.node().getComputedTextLength() > width) {
+          line.pop()
+          tspan.text(line.join(' '))
+          line = [word]
+          tspan = text
+            .append('tspan')
+            .attr('x', 0)
+            .attr('y', y)
+            .attr('dy', ++lineNumber * lineHeight + dy + 'em')
+            .text(word)
+        }
+      }
+    })
+  }
+
+  useEffect(() => {
+    if (companiesList.data.length) {
       const interval = setInterval(() => {
         d3.select(svgRef.current)
-          .selectAll(".node")
-          .attr(
-            "transform",
-            (d) =>
-              `translate(${(d.x = (d.x + width + 2) % (width + 4))},${d.y})`
-          );
+          .selectAll('.node')
+          .attr('transform', (d) => `translate(${(d.x = (d.x + width + 2) % (width + 4))},${d.y})`)
 
         d3.select(svgRef.current)
-          .selectAll(".link")
-          .attr("x1", (d) => d.source.x)
-          .attr("y1", (d) => d.source.y)
-          .attr("x2", (d) => d.target.x)
-          .attr("y2", (d) => d.target.y);
-      }, 30);
+          .selectAll('.link')
+          .attr('x1', (d) => d.source.x)
+          .attr('y1', (d) => d.source.y)
+          .attr('x2', (d) => d.target.x)
+          .attr('y2', (d) => d.target.y)
+      }, 30)
 
-      return () => clearInterval(interval);
+      return () => clearInterval(interval)
     }
-  }, [updatedCompaniesList, width]);
+  }, [companiesList, width])
 
   return (
     <>
-      <svg
-        className="bubble-view"
-        width="100%"
-        height="100%"
-        ref={svgRef}
-      ></svg>
+      <svg className='bubble-view' width='100%' height='100%' ref={svgRef} />
       {selectedBubbleIndex !== null && (
         <ModalView
           selectedBubbleIndex={selectedBubbleIndex}
@@ -191,7 +176,7 @@ const BubbleView = () => {
         />
       )}
     </>
-  );
-};
+  )
+}
 
-export default BubbleView;
+export default BubbleView

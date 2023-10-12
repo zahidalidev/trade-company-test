@@ -1,6 +1,5 @@
-export const createLinks = (companies) => {
-  const data = companies.result.data
-  const companyLinks = []
+export const createLinks = data => {
+  const links = []
   for (let i = 0; i < data.length - 1; i++) {
     const currentCompany = data[i]
     const nextCompany = data[i + 1]
@@ -10,11 +9,11 @@ export const createLinks = (companies) => {
       target: nextCompany._id,
     }
 
-    companyLinks.push(link)
+    links.push(link)
   }
 
   return {
-    ...companies,
-    links: companyLinks,
+    data,
+    links,
   }
 }

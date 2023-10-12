@@ -21,8 +21,8 @@ const App = () => {
 
   const getAllCompanies = async () => {
     try {
-      const response = await fetchAllCompanies()
-      const updatedData = createLinks(response)
+      const { result } = await fetchAllCompanies()
+      const updatedData = createLinks(result.data)
       dispatch(UPDATE_COMPANIES(updatedData))
     } catch (error) {}
   }

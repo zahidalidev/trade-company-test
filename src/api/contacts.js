@@ -1,7 +1,7 @@
 import instance from 'api'
 
-export const fetchAllCompanies = () =>
+export const fetchAllContacts = () =>
   instance
-    .get('/api/v0.3/companies')
+    .get('/api/v0.3/companies/contacts')
     .then(response => response.data)
     .catch(() => ({}))
