@@ -1,21 +1,14 @@
 import * as d3 from 'd3'
-import React, { useEffect, useRef, useState, useCallback } from 'react'
-
+import React, { useEffect, useRef, useState } from 'react'
 import ModalView from '../ModalView'
-
 import './styles.css'
 
 const BubbleView = ({ activeTab, data, links, logos }) => {
   const [selectedBubbleIndex, setSelectedBubbleIndex] = useState(null)
 
   const svgRef = useRef()
-
   const width = window.innerWidth
   const height = Math.min(window.innerHeight, 0.5 * window.innerHeight)
-
-  const handleBubbleClick = (index) => {
-    setSelectedBubbleIndex(index)
-  }
 
   useEffect(() => {
     const svg = d3.select(svgRef.current)
@@ -27,10 +20,10 @@ const BubbleView = ({ activeTab, data, links, logos }) => {
 
     const simulation = d3
       .forceSimulation(data)
-      .force('charge', d3.forceManyBody().strength(-100))
-      .force('center', d3.forceCenter(width / 0.4, height / 1.3))
-      .force('x', d3.forceX(width / 2).strength())
-      .force('y', d3.forceY(height / 2).strength(0.06))
+      .force('charge', d3.forceManyBody().strength(-200))
+      .force('center', d3.forceCenter(width / 2, height / 1.2))
+      .force('x', d3.forceX().strength(0.01))
+      .force('y', d3.forceY().strength(0.09))
       .force(
         'link',
         d3
@@ -65,21 +58,16 @@ const BubbleView = ({ activeTab, data, links, logos }) => {
       .enter()
       .append('g')
       .attr('class', 'node')
-      .on('click', (d, i) => handleBubbleClick(i))
+      .on('click', (d, i) => setSelectedBubbleIndex(i))
 
     const getRandomLogo = () => logos[Math.floor(Math.random() * logos.length)]
 
     nodes
       .append('image')
       .attr('xlink:href', (d) => (d.logo ? d.logo : getRandomLogo()))
-      .attr(
-        'x',
-        (d) => -Math.min(20, activeTab === 'companies' ? d.name.length * 2 : d.firstname.length * 2)
-      )
+      .attr('x', -20)
       .attr('y', -20)
-      .attr('width', (d) =>
-        Math.min(40, activeTab === 'companies' ? d.name.length * 4 : d.firstname.length * 4)
-      )
+      .attr('width', 40)
       .attr('height', 40)
       .attr('clip-path', `url(#${clipPathId})`)
 
@@ -99,7 +87,9 @@ const BubbleView = ({ activeTab, data, links, logos }) => {
       .call(wrap, 60)
 
     simulation.on('tick', () => {
-      nodes.attr('transform', (d) => `translate(${(d.x = (d.x + width + 2) % (width + 4))},${d.y})`)
+      nodes.attr('transform', (d) => {
+        return `translate(${d.x},${d.y})`
+      })
 
       link
         .attr('x1', (d) => d.source.x)
@@ -108,64 +98,67 @@ const BubbleView = ({ activeTab, data, links, logos }) => {
         .attr('y2', (d) => d.target.y)
     })
 
-    return () => {
-      simulation.stop()
-    }
-  }, [data, links, activeTab])
+    const moveBubbles = () => {
+      nodes.attr('transform', function (d, i) {
+        const speed = 0.5
+        const direction = i % 2 === 0 ? 1 : -1
+        d.x += direction * speed
 
-  const wrap = useCallback(
-    (text, width) => {
-      text.each(function () {
-        const text = d3.select(this)
-        const words = text.text().split(/\s+/).reverse()
-        let word
-        let line = []
-        let lineNumber = 0
-        const lineHeight = 1.1
-        const y = text.attr('y')
-        const dy = parseFloat(text.attr('dy'))
-        let tspan = text
-          .text(null)
-          .append('tspan')
-          .attr('x', 0)
-          .attr('y', y)
-          .attr('dy', dy + 'em')
-        while ((word = words.pop())) {
-          line.push(word)
-          tspan.text(line.join(' '))
-          if (tspan.node().getComputedTextLength() > width) {
-            line.pop()
-            tspan.text(line.join(' '))
-            line = [word]
-            tspan = text
-              .append('tspan')
-              .attr('x', 0)
-              .attr('y', y)
-              .attr('dy', ++lineNumber * lineHeight + dy + 'em')
-              .text(word)
-          }
-        }
+        if (d.x < -20) d.x = width + 20
+        else if (d.x > width + 20) d.x = -20
+
+        return `translate(${d.x},${d.y})`
       })
-    },
-    [data, links, activeTab]
-  )
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      d3.select(svgRef.current)
-        .selectAll('.node')
-        .attr('transform', (d) => `translate(${(d.x = (d.x + width + 2) % (width + 4))},${d.y})`)
-
-      d3.select(svgRef.current)
-        .selectAll('.link')
+      link
         .attr('x1', (d) => d.source.x)
         .attr('y1', (d) => d.source.y)
         .attr('x2', (d) => d.target.x)
         .attr('y2', (d) => d.target.y)
-    }, 30)
 
-    return () => clearInterval(interval)
-  }, [data, links, width, activeTab])
+      requestAnimationFrame(moveBubbles)
+    }
+
+    moveBubbles()
+
+    return () => {
+      simulation.stop()
+    }
+  }, [data, links, activeTab, logos, width, height])
+
+  const wrap = (text, width) => {
+    text.each(function () {
+      const text = d3.select(this)
+      const words = text.text().split(/\s+/).reverse()
+      let word
+      let line = []
+      let lineNumber = 0
+      const lineHeight = 1.1
+      const y = text.attr('y')
+      const dy = parseFloat(text.attr('dy'))
+      let tspan = text
+        .text(null)
+        .append('tspan')
+        .attr('x', 0)
+        .attr('y', y)
+        .attr('dy', dy + 'em')
+      while ((word = words.pop())) {
+        line.push(word)
+        tspan.text(line.join(' '))
+        if (tspan.node().getComputedTextLength() > width) {
+          line.pop()
+          tspan.text(line.join(' '))
+          line = [word]
+          tspan = text
+            .append('tspan')
+            .attr('x', 0)
+            .attr('y', y)
+            .attr('dy', ++lineNumber * lineHeight + dy + 'em')
+            .text(word)
+        }
+      }
+    })
+  }
 
   return (
     <>
