@@ -3,7 +3,7 @@ export const createLinks = (data) => {
   for (let i = 0; i < data.length - 1; i++) {
     const current = data[i]
     const next = data[i + 1]
-    
+
     links.push({
       source: current._id,
       target: next._id,
@@ -15,3 +15,5 @@ export const createLinks = (data) => {
     links,
   }
 }
+
+export const getNameLength = name => (name.length <= 5 ? 7 : name.length)

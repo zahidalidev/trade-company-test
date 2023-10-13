@@ -5,6 +5,7 @@ const initialState = {
   data: [],
   allLinks: [],
   allData: [],
+  loading: true
 }
 
 const slice = createSlice({
@@ -18,6 +19,7 @@ const slice = createSlice({
         data,
         allLinks: links,
         allData: data,
+        loading: false
       }
     },
     FILTER_COMPANIES: (companies, action) => {

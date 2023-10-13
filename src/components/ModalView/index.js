@@ -17,7 +17,7 @@ const ModalView = ({ selectedBubbleIndex, setSelectedBubbleIndex, activeTab }) =
     centered
     className='newStyle'
   >
-    <div className='container'>
+    <Flex className='container'>
       <Image
         src={
           selectedBubbleIndex?.logo ||
@@ -60,10 +60,10 @@ const ModalView = ({ selectedBubbleIndex, setSelectedBubbleIndex, activeTab }) =
         {activeTab === 'companies' ? (
           <>
             <Flex style={{ width: '45%' }}>
-              <div style={{ position: 'relative', zIndex: 1 }}>
+              <Flex style={{ position: 'relative', zIndex: 1 }}>
                 <Image src='/icons/pic2.svg' alt='pic 2' width={100} height={100} />
-              </div>
-              <div style={{ position: 'relative', zIndex: 2 }}>
+              </Flex>
+              <Flex style={{ position: 'relative', zIndex: 2 }}>
                 <Image
                   src='/icons/pic3.svg'
                   alt='pic 3'
@@ -71,8 +71,8 @@ const ModalView = ({ selectedBubbleIndex, setSelectedBubbleIndex, activeTab }) =
                   height={100}
                   className='profile3'
                 />
-              </div>
-              <div style={{ position: 'relative', zIndex: 3 }}>
+              </Flex>
+              <Flex style={{ position: 'relative', zIndex: 3 }}>
                 <Image
                   src='/icons/pic1.svg'
                   alt='pic 1'
@@ -80,7 +80,7 @@ const ModalView = ({ selectedBubbleIndex, setSelectedBubbleIndex, activeTab }) =
                   height={100}
                   className='profile1'
                 />
-              </div>
+              </Flex>
             </Flex>
             <Flex vertical='vertical'>
               <Text className='mainTitle'>Alexandra Maldonado</Text>
@@ -118,7 +118,7 @@ const ModalView = ({ selectedBubbleIndex, setSelectedBubbleIndex, activeTab }) =
           </Text>
         </Button>
       </Space>
-    </div>
+    </Flex>
     <Footer style={{ width: '100%', marginTop: '20px' }}>
       <Flex justify='space-between' align='center'>
         <Button type='text'>

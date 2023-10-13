@@ -20,25 +20,21 @@ const { Content } = Layout
 const App = () => {
   const dispatch = useDispatch()
 
-  const getAllCompanies = async () => {
+  const getCompaniesAndContact = async () => {
     try {
-      const { result } = await fetchAllCompanies()
-      const updatedData = createLinks(result.data)
-      dispatch(UPDATE_COMPANIES(updatedData))
-    } catch (error) {}
-  }
+      const { result: companies } = await fetchAllCompanies()
+      const { result: contacts } = await fetchAllContacts()
 
-  const getAllCotacts = async () => {
-    try {
-      const { result } = await fetchAllContacts()
-      const updatedData = createLinks(result.data)
-      dispatch(UPDATE_COTACTS(updatedData))
+      const companiesData = createLinks(companies.data)
+      const contactsData = createLinks(contacts.data)
+
+      dispatch(UPDATE_COMPANIES(companiesData))
+      dispatch(UPDATE_COTACTS(contactsData))
     } catch (error) {}
   }
 
   useEffect(() => {
-    getAllCompanies()
-    getAllCotacts()
+    getCompaniesAndContact()
   }, [])
 
   return (

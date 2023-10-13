@@ -1,5 +1,5 @@
-import { Button, Col, Modal, Row, Space, Typography } from 'antd'
-import React, { useState } from 'react'
+import { Button, Col, Modal, Row, Space, Typography, Flex } from 'antd'
+import React from 'react'
 
 import Select from 'components/Select'
 
@@ -18,7 +18,7 @@ const FilterModal = ({ isModalVisible, handleCancel, handleChange, filters, hand
       className='modal-container'
       mask={false}
     >
-      <div className='modal-fields'>
+      <Flex className='modal-fields'>
         {filters.map((filter, index) => (
           <Col key={index} className='modal-select'>
             <Select
@@ -40,7 +40,7 @@ const FilterModal = ({ isModalVisible, handleCancel, handleChange, filters, hand
             </Button>
           </Space>
         </Row>
-      </div>
+      </Flex>
     </Modal>
   )
 }

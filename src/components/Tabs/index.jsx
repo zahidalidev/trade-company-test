@@ -12,6 +12,7 @@ import { FILTER_COTACTS } from 'store/contacts'
 import { FILTER_COMPANIES } from 'store/companies'
 
 import './styles.css'
+import Spin from 'components/Spin'
 
 const { Text } = Typography
 
@@ -74,9 +75,13 @@ const Tabs = () => {
   const handleSearch = (event) => {
     const value = event.target.value
 
-    const filteredContacts = contacts.allData.filter(contact => contact.firstname?.includes(value.toLowerCase()))
-    const filteredCompanies = companies.allData.filter(company => company.name?.includes(value.toLowerCase()))
-  
+    const filteredContacts = contacts.allData.filter((contact) =>
+      contact.firstname?.includes(value.toLowerCase())
+    )
+    const filteredCompanies = companies.allData.filter((company) =>
+      company.name?.includes(value.toLowerCase())
+    )
+
     const updatedContacts = createLinks(filteredContacts)
     const updatedCompanies = createLinks(filteredCompanies)
 
@@ -124,9 +129,12 @@ const Tabs = () => {
         />
       </Row>
       {useMemo(
-        () => (
-          <BubbleView activeTab={activeTab} data={data} links={links} logos={logos} />
-        ),
+        () =>
+          companies.loading ? (
+            <Spin />
+          ) : (
+            <BubbleView activeTab={activeTab} data={data} links={links} logos={logos} />
+          ),
         [activeTab, data, links, logos]
       )}
     </>
