@@ -1,28 +1,28 @@
-import * as d3 from 'd3'
-import React, { useEffect, useRef, useState } from 'react'
-import ModalView from '../ModalView'
-import './styles.css'
+import * as d3 from 'd3';
+import React, { useEffect, useRef, useState } from 'react';
+import ModalView from '../ModalView';
+import './styles.css';
 
 const BubbleView = ({ activeTab, data, links, logos }) => {
-  const [selectedBubbleIndex, setSelectedBubbleIndex] = useState(null)
+  const [selectedBubbleIndex, setSelectedBubbleIndex] = useState(null);
 
-  const svgRef = useRef()
-  const width = window.innerWidth
-  const height = Math.min(window.innerHeight, 0.5 * window.innerHeight)
+  const svgRef = useRef();
+  const width = window.innerWidth;
+  const height = Math.min(window.innerHeight, 0.5 * window.innerHeight);
 
   useEffect(() => {
-    const svg = d3.select(svgRef.current)
+    const svg = d3.select(svgRef.current);
 
-    svg.selectAll('.node').remove()
-    svg.selectAll('.link').remove()
+    svg.selectAll('.node').remove();
+    svg.selectAll('.link').remove();
 
-    const linkDistance = () => Math.floor(Math.random() * 700)
+    const linkDistance = () => Math.floor(Math.random() * 700);
 
     const simulation = d3
       .forceSimulation(data)
       .force('charge', d3.forceManyBody().strength(-200))
       .force('center', d3.forceCenter(width / 2, height / 1.2))
-      .force('x', d3.forceX().strength(0.01))
+      .force('x', d3.forceX().strength(0.03))
       .force('y', d3.forceY().strength(0.09))
       .force(
         'link',
@@ -31,6 +31,9 @@ const BubbleView = ({ activeTab, data, links, logos }) => {
           .id((d) => d._id)
           .distance(linkDistance)
       )
+      .alphaTarget(0.1)
+      .alphaDecay(1)
+      .velocityDecay(0.8);
 
     const link = svg
       .selectAll('.link')
@@ -39,9 +42,9 @@ const BubbleView = ({ activeTab, data, links, logos }) => {
       .append('line')
       .attr('class', 'link')
       .style('stroke', 'gray')
-      .style('stroke-width', 0.5)
+      .style('stroke-width', 0.5);
 
-    const clipPathId = 'clip-path-circle'
+    const clipPathId = 'clip-path-circle';
 
     svg
       .append('defs')
@@ -50,7 +53,7 @@ const BubbleView = ({ activeTab, data, links, logos }) => {
       .append('circle')
       .attr('cx', 0)
       .attr('cy', 0)
-      .attr('r', 20)
+      .attr('r', 20);
 
     const nodes = svg
       .selectAll('.node')
@@ -58,9 +61,9 @@ const BubbleView = ({ activeTab, data, links, logos }) => {
       .enter()
       .append('g')
       .attr('class', 'node')
-      .on('click', (d, i) => setSelectedBubbleIndex(i))
+      .on('click', (d, i) => setSelectedBubbleIndex(i));
 
-    const getRandomLogo = () => logos[Math.floor(Math.random() * logos.length)]
+    const getRandomLogo = () => logos[Math.floor(Math.random() * logos.length)];
 
     nodes
       .append('image')
@@ -69,96 +72,83 @@ const BubbleView = ({ activeTab, data, links, logos }) => {
       .attr('y', -20)
       .attr('width', 40)
       .attr('height', 40)
-      .attr('clip-path', `url(#${clipPathId})`)
+      .attr('clip-path', `url(#${clipPathId})`);
 
     nodes
       .append('text')
       .text((d) => {
-        const name = activeTab === 'companies' ? d.name : d.firstname
+        const name = activeTab === 'companies' ? d.name : d.firstname;
         if (name.length > 10) {
-          return name.substring(0, 10).toUpperCase() + '...'
+          return name.substring(0, 10).toUpperCase() + '...';
         }
-        return name.toUpperCase()
+        return name.toUpperCase();
       })
       .attr('text-anchor', 'middle')
       .attr('dy', 4)
       .style('font-size', '8px')
       .style('font-weight', 'bold')
-      .call(wrap, 60)
-
-    simulation.on('tick', () => {
-      nodes.attr('transform', (d) => {
-        return `translate(${d.x},${d.y})`
-      })
-
-      link
-        .attr('x1', (d) => d.source.x)
-        .attr('y1', (d) => d.source.y)
-        .attr('x2', (d) => d.target.x)
-        .attr('y2', (d) => d.target.y)
-    })
-
-    const moveBubbles = () => {
-      nodes.attr('transform', function (d, i) {
-        const speed = 0.5
-        const direction = i % 2 === 0 ? 1 : -1
-        d.x += direction * speed
-
-        if (d.x < -20) d.x = width + 20
-        else if (d.x > width + 20) d.x = -20
-
-        return `translate(${d.x},${d.y})`
-      })
-
-      link
-        .attr('x1', (d) => d.source.x)
-        .attr('y1', (d) => d.source.y)
-        .attr('x2', (d) => d.target.x)
-        .attr('y2', (d) => d.target.y)
-
-      requestAnimationFrame(moveBubbles)
-    }
-
-    moveBubbles()
+      .call(wrap, 60);
+      
+      const moveBubbles = () => {
+        nodes.attr('transform', function (d, i) {
+          const speed = 0.5 * (i % 2 === 0 ? 1 : -1); // Adjust speed here
+          d.x += speed;
+  
+          if (d.x < -20) d.x = width + 20;
+          else if (d.x > width + 20) d.x = -20;
+  
+          return `translate(${d.x},${d.y})`;
+        });
+  
+        link
+          .attr('x1', (d) => d.source.x)
+          .attr('y1', (d) => d.source.y)
+          .attr('x2', (d) => d.target.x)
+          .attr('y2', (d) => d.target.y);
+  
+        requestAnimationFrame(moveBubbles);
+      };
+  
+      moveBubbles();
 
     return () => {
-      simulation.stop()
-    }
-  }, [data, links, activeTab, logos, width, height])
+      simulation.stop();
+    };
+  }, [data, links, activeTab, logos, width, height]);
 
   const wrap = (text, width) => {
     text.each(function () {
-      const text = d3.select(this)
-      const words = text.text().split(/\s+/).reverse()
-      let word
-      let line = []
-      let lineNumber = 0
-      const lineHeight = 1.1
-      const y = text.attr('y')
-      const dy = parseFloat(text.attr('dy'))
+      const text = d3.select(this);
+      const words = text.text().split(/\s+/).reverse();
+      let word;
+      let line = [];
+      let lineNumber = 0;
+      const lineHeight = 1.1;
+      const y = text.attr('y');
+      const dy = parseFloat(text.attr('dy'));
       let tspan = text
         .text(null)
         .append('tspan')
         .attr('x', 0)
         .attr('y', y)
-        .attr('dy', dy + 'em')
+        .attr('dy', dy + 'em');
       while ((word = words.pop())) {
-        line.push(word)
-        tspan.text(line.join(' '))
+        line.push(word);
+        tspan.text(line.join(' '));
         if (tspan.node().getComputedTextLength() > width) {
-          line.pop()
-          tspan.text(line.join(' '))
-          line = [word]
+          line.pop();
+          tspan.text(line.join(' '));
+          line = [word];
           tspan = text
             .append('tspan')
             .attr('x', 0)
             .attr('y', y)
             .attr('dy', ++lineNumber * lineHeight + dy + 'em')
-            .text(word)
+            .text(word);
         }
       }
-    })
-  }
+    });
+  };
 
   return (
     <>
@@ -171,7 +161,7 @@ const BubbleView = ({ activeTab, data, links, logos }) => {
         />
       )}
     </>
-  )
-}
+  );
+};
 
-export default BubbleView
+export default BubbleView;
