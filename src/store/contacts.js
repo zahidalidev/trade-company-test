@@ -20,7 +20,6 @@ const slice = createSlice({
         allData: data,
       }
     },
-
     FILTER_COTACTS: (companies, action) => {
       const { links, data } = action.payload
       const { allLinks, allData } = companies

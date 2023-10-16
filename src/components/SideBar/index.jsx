@@ -1,7 +1,6 @@
-import React from "react";
+import { Layout, Flex } from 'antd'
+import React from 'react'
 
-import { Layout, Flex } from "antd";
-const { Sider } = Layout;
 import {
   DashboardIcon,
   AppsIcon,
@@ -10,37 +9,29 @@ import {
   QuestCircleIcon,
   RightChevronIcon,
   GraphIcon,
-} from "../icons";
+} from '../icons'
+import './styles.css'
 
-import "./styles.css";
+const { Sider } = Layout
 
-const SideBar = () => {
-  return (
-    <Sider>
-      <Flex
-        vertical="vertical"
-        justify="space-between"
-        align="center"
-        className="sidebar"
-      >
-        <Flex vertical="vertical" gap={31}>
-          <Flex vertical="vertical" gap={31} className="sidebar-menu">
-            <DashboardIcon />
-          </Flex>
-
-          <AppsIcon />
-          <CalenderIcon />
-          <GraphIcon />
-          <SettingIcon />
+const SideBar = () => (
+  <Sider>
+    <Flex vertical='vertical' justify='space-between' align='center' className='sidebar'>
+      <Flex vertical='vertical' gap={31}>
+        <Flex vertical='vertical' gap={31} className='sidebar-menu'>
+          <DashboardIcon />
         </Flex>
-
-        <Flex vertical="vertical" gap={28}>
-          <QuestCircleIcon />
-          <RightChevronIcon />
-        </Flex>
+        <AppsIcon />
+        <CalenderIcon />
+        <GraphIcon />
+        <SettingIcon />
       </Flex>
-    </Sider>
-  );
-};
+      <Flex vertical='vertical' gap={28}>
+        <QuestCircleIcon />
+        <RightChevronIcon />
+      </Flex>
+    </Flex>
+  </Sider>
+)
 
-export default SideBar;
+export default SideBar

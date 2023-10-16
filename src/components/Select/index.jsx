@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
 import { Select as AntdSelet, Space } from 'antd'
+import React, { useState } from 'react'
 
 import './styles.css'
 
@@ -21,7 +21,7 @@ const Select = ({ placeholder, onChange, options }) => {
       value={selectedValues}
       onChange={handleSelectChange}
     >
-      {options.map((option) => (
+      {options.map(option => (
         <Option key={option.value} value={option.value} label={option.label}>
           <Space>{option.label}</Space>
         </Option>

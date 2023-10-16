@@ -4,7 +4,7 @@
 }
 
 .content-container {
-  background: "#ECF0F4" !important;
+  background: '#ECF0F4' !important;
   height: 60vh !important;
   display: inline-block !important;
 }
@@ -13,5 +13,5 @@
   max-width: 80px !important;
   min-width: 90px !important;
   background-color: #fff !important;
-  border: 1px solid #CED6E0 !important;
+  border: 1px solid #ced6e0 !important;
 }
