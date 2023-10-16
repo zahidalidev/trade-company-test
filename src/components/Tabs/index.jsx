@@ -97,6 +97,15 @@ const Tabs = () => {
     dispatch(FILTER_COMPANIES(updatedCompanies))
   }
 
+  const filterLength = () => {
+    let length = 0;
+    filters.map((filter) => {
+      length += filter.selectedValues.length ? 1 : 0;
+    });
+
+    return length;
+  }; 
+
   return (
     <>
       <Flex vertical='vertical' className='search-fiter'>
@@ -111,7 +120,7 @@ const Tabs = () => {
             <Flex align='center'>
               <RiFilter2Line className='filter-icon' style={{ color: '#93A3BB' }} />
               <Text strong>Filter</Text>
-              {filterCount > 0 && <span className='filter-count'>{filterCount}</span>}
+              <span className="filter-count">{filterLength()}</span>
             </Flex>
           </Button>
         </Flex>
