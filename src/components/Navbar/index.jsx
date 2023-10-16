@@ -1,43 +1,64 @@
-import { Avatar, Col, Dropdown, Input, Layout, Menu, Row } from 'antd'
-import { UserOutlined } from '@ant-design/icons'
+import { Dropdown, Input, Layout, Select, Flex, Typography } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 
-import DownArrowIcon from 'components/icons/DownArrowIcon'
-import MessageIcon from 'components/icons/MessageIcon'
-import { menu } from 'utils/constants'
-import NotificationIcon from 'components/icons/NotificationIcon'
+import DownArrowIcon from "components/icons/DownArrowIcon";
+import MessageIcon from "components/icons/MessageIcon";
+import { menu, options } from "utils/constants";
+import NotificationIcon from "components/icons/NotificationIcon";
 
-import './styles.css'
+import "./styles.css";
 
-const { Header } = Layout
+import { ReactComponent as ProfileImage } from "../../../src/Images/profile.svg";
+import { SearchIcon } from "../icons";
+
+const { Header } = Layout;
+const { Option } = Select;
+const { Text } = Typography;
+
+const handleChange = (value) => {
+  console.log(`Selected: ${value}`);
+};
 
 const Navbar = () => (
-  <Header className='header'>
-    <Row justify='space-between' align='middle'>
-      <Col span={6} className='logo'>
-        <span className='logoText'>LOGO</span>
-        <Input.Search placeholder='Search' className='search' />
-      </Col>
-      <Col span={10} className='rightContent'>
-        <Row justify='end' gutter={16}>
-          <Col>
-            <NotificationIcon className='icon' />
-          </Col>
-          <Col>
-            <MessageIcon className='icon' />
-          </Col>
-          <Col>
-            <Dropdown overlay={menu}>
-              <a className='ant-dropdown-link' onClick={(e) => e.preventDefault()}>
-                <Avatar size='medium' icon={<UserOutlined />} />
-                <span className='profileName'>Aladdinb2b LLC</span>{' '}
-                <DownArrowIcon className='icon' />
-              </a>
-            </Dropdown>
-          </Col>
-        </Row>
-      </Col>
-    </Row>
-  </Header>
-)
+  <Header className="header">
+    <Flex justify="space-between" wrap="wrap">
+      <Flex gap={84} align="center">
+        <Select
+          defaultValue="logoImage"
+          className="select-image"
+          onChange={handleChange}
+          suffixIcon={<DownArrowIcon />}
+        >
+          {options.map((option) => (
+            <Option key={option.value} value={option.value}>
+              {option.label}
+            </Option>
+          ))}
+        </Select>
+        <Input
+          placeholder="Search"
+          className="search"
+          suffix={<SearchIcon />}
+        />
+      </Flex>
 
-export default Navbar
+      <Flex gap={35}>
+        <NotificationIcon className="icon" />
+        <MessageIcon className="icon" />
+        <Dropdown overlay={menu}>
+          <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+            <Flex gap={5} align="center" justify="center">
+              <ProfileImage className="zindex1" />
+
+              <Text className="profileName">Aladdinb2b LLC</Text>
+
+              <DownArrowIcon className="icon" />
+            </Flex>
+          </a>
+        </Dropdown>
+      </Flex>
+    </Flex>
+  </Header>
+);
+
+export default Navbar;

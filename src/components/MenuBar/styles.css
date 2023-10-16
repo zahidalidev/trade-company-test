@@ -1,15 +1,14 @@
 .menu-container {
-background-color: #f0f0f0;
+background-color: #ECF0F4;
+padding: 20px 0 20px 65px;
 }
 
 .menuRow {
-  padding: 0 0 10px 0;
-  background: #f0f0f0;
+  padding: 0 0 10px 25px;
 }
 
 .menu-items {
   color: #000;
-  background: #f0f0f0;
   padding: 0px;
 }
 
@@ -21,10 +20,18 @@ background-color: #f0f0f0;
 }
 
 .menu-item {
-  background: #f0f0f0;
   padding-right: 10px;
+}
+
+.divider-bottom {
+  margin: -1px;
 }
 
 .ant-menu-light.ant-menu-horizontal>.ant-menu-item-selected::after {
   border-bottom-color: #ff681a;
+}
+
+.ant-menu-light.ant-menu-horizontal >.ant-menu-item:hover::after, :where(.css-dev-only-do-not-override-amq5gd).ant-menu-light>.ant-menu.ant-menu-horizontal >.ant-menu-item:hover::after, :where(.css-dev-only-do-not-override-amq5gd).ant-menu-light.ant-menu-horizontal >.ant-menu-submenu:hover::after, :where(.css-dev-only-do-not-override-amq5gd).ant-menu-light>.ant-menu.ant-menu-horizontal >.ant-menu-submenu:hover::after, :where(.css-dev-only-do-not-override-amq5gd).ant-menu-light.ant-menu-horizontal >.ant-menu-item-active::after, :where(.css-dev-only-do-not-override-amq5gd).ant-menu-light>.ant-menu.ant-menu-horizontal >.ant-menu-item-active::after, :where(.css-dev-only-do-not-override-amq5gd).ant-menu-light.ant-menu-horizontal >.ant-menu-submenu-active::after, :where(.css-dev-only-do-not-override-amq5gd).ant-menu-light>.ant-menu.ant-menu-horizontal >.ant-menu-submenu-active::after, :where(.css-dev-only-do-not-override-amq5gd).ant-menu-light.ant-menu-horizontal >.ant-menu-item-open::after, :where(.css-dev-only-do-not-override-amq5gd).ant-menu-light>.ant-menu.ant-menu-horizontal >.ant-menu-item-open::after, :where(.css-dev-only-do-not-override-amq5gd).ant-menu-light.ant-menu-horizontal >.ant-menu-submenu-open::after, :where(.css-dev-only-do-not-override-amq5gd).ant-menu-light>.ant-menu.ant-menu-horizontal >.ant-menu-submenu-open::after {
+    border-bottom-width: 2px;
+    border-bottom-color: #ff681a;
 }
