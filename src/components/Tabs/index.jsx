@@ -71,6 +71,7 @@ const Tabs = () => {
 
     dispatch(FILTER_COTACTS(updatedContacts))
     dispatch(FILTER_COMPANIES(updatedCompanies))
+    setIsModalVisible(false)
   }
 
   const handleClear = () => {

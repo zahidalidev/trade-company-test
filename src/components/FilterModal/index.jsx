@@ -36,9 +36,9 @@ const FilterModal = ({
       ))}
       <Row justify='end' className='modal-row'>
         <Space wrap>
-          <Button onClick={handleClear} type='text' className='modal-button'>
+          {/* <Button onClick={handleClear} type='text' className='modal-button'>
             <Text>Clear all</Text>
-          </Button>
+          </Button> */}
           <Button onClick={handleFilter} className='model-apply-button'>
             <Text className='modal-apply-c' strong>
               Apply
