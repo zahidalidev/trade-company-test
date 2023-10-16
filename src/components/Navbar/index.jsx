@@ -26,7 +26,6 @@ const Navbar = () => (
         </Select>
         <Input placeholder='Search' className='search' suffix={<SearchIcon />} />
       </Flex>
-
       <Flex gap={35}>
         <NotificationIcon className='icon' />
         <MessageIcon className='icon' />

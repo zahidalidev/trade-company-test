@@ -77,16 +77,17 @@ const Tabs = () => {
   const handleClear = () => {
     dispatch(CLEAR_COTACTS())
     dispatch(CLEAR_COMPANIES())
+    setIsModalVisible(false)
   }
 
   const handleSearch = (event) => {
     const value = event.target.value
 
     const filteredContacts = contacts.allData.filter((contact) =>
-      contact.firstname?.includes(value.toLowerCase())
+      contact.firstname.toLowerCase()?.includes(value.toLowerCase())
     )
     const filteredCompanies = companies.allData.filter((company) =>
-      company.name?.includes(value.toLowerCase())
+      company.name.toLowerCase()?.includes(value.toLowerCase())
     )
 
     const updatedContacts = createLinks(filteredContacts)
