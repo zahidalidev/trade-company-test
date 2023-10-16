@@ -5,11 +5,11 @@ import { RiFilter2Line } from 'react-icons/ri'
 import { useDispatch, useSelector } from 'react-redux'
 
 import BubbleView from 'components/BubbleView'
+import { CLEAR_COTACTS, FILTER_COTACTS } from 'store/contacts'
+import { CLEAR_COMPANIES, FILTER_COMPANIES } from 'store/companies'
 import { createLinks } from 'utils/helpers'
 import { companiesLogos, contactsLogos, filterCount, filterOptions } from 'utils/constants'
 import FilterModal from 'components/FilterModal'
-import { FILTER_COTACTS } from 'store/contacts'
-import { FILTER_COMPANIES } from 'store/companies'
 import Spin from 'components/Spin'
 
 import { SearchIcon } from '../icons'
@@ -73,13 +73,18 @@ const Tabs = () => {
     dispatch(FILTER_COMPANIES(updatedCompanies))
   }
 
+  const handleClear = () => {
+    dispatch(CLEAR_COTACTS())
+    dispatch(CLEAR_COMPANIES())
+  }
+
   const handleSearch = (event) => {
     const value = event.target.value
 
-    const filteredContacts = contacts.allData.filter(contact =>
+    const filteredContacts = contacts.allData.filter((contact) =>
       contact.firstname?.includes(value.toLowerCase())
     )
-    const filteredCompanies = companies.allData.filter(company =>
+    const filteredCompanies = companies.allData.filter((company) =>
       company.name?.includes(value.toLowerCase())
     )
 
@@ -104,7 +109,6 @@ const Tabs = () => {
             <Flex align='center'>
               <RiFilter2Line className='filter-icon' style={{ color: '#93A3BB' }} />
               <Text strong>Filter</Text>
-
               {filterCount > 0 && <span className='filter-count'>{filterCount}</span>}
             </Flex>
           </Button>
@@ -131,6 +135,7 @@ const Tabs = () => {
           handleChange={handleChange}
           filters={filters}
           handleFilter={handleFilter}
+          handleClear={handleClear}
         />
         {useMemo(
           () =>

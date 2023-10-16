@@ -33,8 +33,17 @@ const slice = createSlice({
         allData,
       }
     },
+    CLEAR_COMPANIES: (companies, action) => {
+      const { allLinks, allData } = companies
+      return {
+        links: allLinks,
+        data: allData,
+        allLinks,
+        allData,
+      }
+    },
   },
 })
 
-export const { UPDATE_COMPANIES, FILTER_COMPANIES } = slice.actions
+export const { UPDATE_COMPANIES, FILTER_COMPANIES, CLEAR_COMPANIES } = slice.actions
 export default slice.reducer

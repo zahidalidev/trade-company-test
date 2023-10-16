@@ -1,5 +1,5 @@
 import { Button, Col, Modal, Row, Space, Typography, Flex } from 'antd'
-import React from 'react'
+import React, { useRef } from 'react'
 
 import Select from 'components/Select'
 
@@ -7,7 +7,14 @@ import './styles.css'
 
 const { Text } = Typography
 
-const FilterModal = ({ isModalVisible, handleCancel, handleChange, filters, handleFilter }) => (
+const FilterModal = ({
+  isModalVisible,
+  handleCancel,
+  handleChange,
+  filters,
+  handleFilter,
+  handleClear,
+}) => (
   <Modal
     title='Filter Options'
     visible={isModalVisible}
@@ -21,6 +28,7 @@ const FilterModal = ({ isModalVisible, handleCancel, handleChange, filters, hand
       {filters.map((filter, index) => (
         <Col key={index} className='modal-select'>
           <Select
+            ref={index == 0 ? selectRef : null}
             placeholder={filter.placeHolder}
             onChange={(value) => handleChange(value, index)}
             options={filter.options}
@@ -29,7 +37,7 @@ const FilterModal = ({ isModalVisible, handleCancel, handleChange, filters, hand
       ))}
       <Row justify='end' className='modal-row'>
         <Space wrap>
-          <Button type='text' className='modal-button'>
+          <Button onClick={handleClear} type='text' className='modal-button'>
             <Text>Clear all</Text>
           </Button>
           <Button onClick={handleFilter} className='model-apply-button'>

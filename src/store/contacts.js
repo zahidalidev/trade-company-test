@@ -31,8 +31,17 @@ const slice = createSlice({
         allData,
       }
     },
+    CLEAR_COTACTS: (companies, action) => {
+      const { allLinks, allData } = companies
+      return {
+        links: allLinks,
+        data: allData,
+        allLinks,
+        allData,
+      }
+    },
   },
 })
 
-export const { UPDATE_COTACTS, FILTER_COTACTS } = slice.actions
+export const { UPDATE_COTACTS, FILTER_COTACTS, CLEAR_COTACTS } = slice.actions
 export default slice.reducer
