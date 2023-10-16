@@ -28,7 +28,6 @@ const FilterModal = ({
       {filters.map((filter, index) => (
         <Col key={index} className='modal-select'>
           <Select
-            ref={index == 0 ? selectRef : null}
             placeholder={filter.placeHolder}
             onChange={(value) => handleChange(value, index)}
             options={filter.options}
