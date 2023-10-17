@@ -6,6 +6,6 @@ const instance = axios.create({
 })
 
 instance.defaults.headers.common['Authorization'] = `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`
-instance.defaults.headers.common['event-id'] = '634857b8706662e4d7bba0b5'
+instance.defaults.headers.common['event-id'] = process.env.REACT_APP_EVETN_ID
 
 export default instance

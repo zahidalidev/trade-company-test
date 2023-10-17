@@ -7,8 +7,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import BubbleView from 'components/BubbleView'
 import { CLEAR_COTACTS, FILTER_COTACTS } from 'store/contacts'
 import { CLEAR_COMPANIES, FILTER_COMPANIES } from 'store/companies'
+import { searchCompanies } from 'api/company'
+import { searchContacts } from 'api/contacts'
 import { createLinks } from 'utils/helpers'
-import { companiesLogos, contactsLogos, filterCount, filterOptions } from 'utils/constants'
+import { companiesLogos, contactsLogos, filterOptions } from 'utils/constants'
 import FilterModal from 'components/FilterModal'
 import Spin from 'components/Spin'
 
@@ -80,31 +82,58 @@ const Tabs = () => {
     setIsModalVisible(false)
   }
 
-  const handleSearch = (event) => {
+  const handleSearch = async (event) => {
     const value = event.target.value
 
-    const filteredContacts = contacts.allData.filter((contact) =>
-      contact.firstname.toLowerCase()?.includes(value.toLowerCase())
-    )
-    const filteredCompanies = companies.allData.filter((company) =>
-      company.name.toLowerCase()?.includes(value.toLowerCase())
-    )
+    if (activeTab === 'companies' && (value.length > 2 || value.length === 0)) {
+      const { result: companies } = await searchCompanies(value)
 
-    const updatedContacts = createLinks(filteredContacts)
-    const updatedCompanies = createLinks(filteredCompanies)
+      console.log('result companies', companies)
 
-    dispatch(FILTER_COTACTS(updatedContacts))
-    dispatch(FILTER_COMPANIES(updatedCompanies))
+      const companiesData = createLinks(companies.data)
+
+      dispatch(FILTER_COMPANIES(companiesData))
+
+      // const filteredCompanies = companies.allData.filter((company) =>
+      //   company.name.toLowerCase()?.includes(value.toLowerCase())
+      // )
+
+      // const updatedCompanies = createLinks(filteredCompanies)
+      // dispatch(FILTER_COMPANIES(updatedCompanies))
+    } else if (activeTab === 'people' && (value.length > 2 || value.length === 0)) {
+      const { result: contacts } = await searchContacts(value)
+
+      console.log('result contacts', contacts)
+
+      const contactsData = createLinks(contacts.data)
+
+      dispatch(FILTER_COTACTS(contactsData))
+
+      // const filteredCompanies = companies.allData.filter((company) =>
+      //   company.name.toLowerCase()?.includes(value.toLowerCase())
+      // )
+
+      // const updatedCompanies = createLinks(filteredCompanies)
+      // dispatch(FILTER_COMPANIES(updatedCompanies))
+    }
+
+    // const filteredContacts = contacts.allData.filter((contact) =>
+    //   contact.firstname.toLowerCase()?.includes(value.toLowerCase())
+    // )
+
+    // const updatedContacts = createLinks(filteredContacts)
+
+    // dispatch(FILTER_COTACTS(updatedContacts))
   }
 
   const filterLength = () => {
-    let length = 0;
+    let length = 0
     filters.map((filter) => {
-      length += filter.selectedValues.length ? 1 : 0;
-    });
+      length += filter.selectedValues.length ? 1 : 0
+    })
 
-    return length;
-  }; 
+    return length
+  }
 
   return (
     <>
@@ -120,7 +149,7 @@ const Tabs = () => {
             <Flex align='center'>
               <RiFilter2Line className='filter-icon' style={{ color: '#93A3BB' }} />
               <Text strong>Filter</Text>
-              <span className="filter-count">{filterLength()}</span>
+              <span className='filter-count'>{filterLength()}</span>
             </Flex>
           </Button>
         </Flex>
