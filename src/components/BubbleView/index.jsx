@@ -70,7 +70,7 @@ const BubbleView = ({ activeTab, data, links, logos }) => {
 
     nodes
       .append('image')
-      .attr('xlink:href', d => (d.logo ? d.logo : getRandomLogo()))
+      .attr('xlink:href', (d) => (d.logo ? d.logo : getRandomLogo()))
       .attr(
         'x',
         (d) =>
@@ -80,7 +80,7 @@ const BubbleView = ({ activeTab, data, links, logos }) => {
           )
       )
       .attr('y', -20)
-      .attr('width', d =>
+      .attr('width', (d) =>
         Math.min(
           40,
           activeTab === 'companies' ? getNameLength(d.name) * 4 : getNameLength(d.firstname) * 4
@@ -91,7 +91,7 @@ const BubbleView = ({ activeTab, data, links, logos }) => {
 
     nodes
       .append('text')
-      .text(d => {
+      .text((d) => {
         const name = activeTab === 'companies' ? d.name : d.firstname
         if (name.length > 10) return name.substring(0, 7).toUpperCase() + '...'
 
@@ -115,10 +115,10 @@ const BubbleView = ({ activeTab, data, links, logos }) => {
       })
 
       link
-        .attr('x1', d => d.source.x)
-        .attr('y1', d => d.source.y)
-        .attr('x2', d => d.target.x)
-        .attr('y2', d => d.target.y)
+        .attr('x1', (d) => d.source.x)
+        .attr('y1', (d) => d.source.y)
+        .attr('x2', (d) => d.target.x)
+        .attr('y2', (d) => d.target.y)
 
       requestAnimationFrame(moveBubbles)
     }

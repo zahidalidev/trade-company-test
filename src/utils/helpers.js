@@ -20,7 +20,7 @@ export const getNameLength = name => (name.length <= 5 ? 7 : name.length)
 
 export const getCompanyQuery = value =>
   value.length
-    ? `?query={"status":"Published","$or":[{"name":{"$regex":"(?i)${value}"}},{"email":{"$regex":"(?i)${value}"}},{"website":{"$regex":"(?i)${value}"}},{"userType":{"$regex":"(?i)${value}"}}]}&needPopulate=true&hasTotal=true&sort=-createdAt&limit=10&populates[]={"path":"contacts"}`
+    ? `?query={"status":"Published","$or":[{"name":{"$regex":"(?i)${value}"}},{"email":{"$regex":"(?i)${value}"}},{"website":{"$regex":"(?i)${value}"}},{"userType":{"$regex":"(?i)${value}"}}]}&needPopulate=true&hasTotal=true&sort=-createdAt&populates[]={"path":"contacts"}`
     : ''
 
 export const getContactsQuery = value =>
