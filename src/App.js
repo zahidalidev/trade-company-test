@@ -17,6 +17,9 @@ import { UPDATE_COTACTS } from 'store/contacts'
 
 import './App.css'
 
+import axios from 'axios'
+import polyline from '@mapbox/polyline'
+
 const { Header, Footer, Sider, Content } = Layout
 
 const App = () => {
@@ -35,7 +38,29 @@ const App = () => {
     } catch (error) {}
   }
 
+  const fetchAllCoordinates = async () => {
+    try {
+      const origin = '25.1972,55.2744'
+      const destination = '25.173186247709985,55.23993520592102'
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&key=AIzaSyDsEIMpQHSdhZOZcEk7cOe4ibTEV7Lz0Ec`
+      )
+
+      if (response.data.status === 'OK') {
+        const route = response.data.routes[0]
+        const routeCoordinates = polyline.decode(route.overview_polyline.points)
+
+        console.log('routeCoordinates::', routeCoordinates)
+      } else {
+        throw new Error('Directions API request failed')
+      }
+    } catch (error) {
+      console.error('Error getting route coordinates:', error)
+    }
+  }
+
   useEffect(() => {
+    fetchAllCoordinates()
     getCompaniesAndContact()
   }, [])
 
